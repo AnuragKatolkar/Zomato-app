@@ -15,6 +15,8 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(cors())
 
+let {getData,getDatawithsort,getDatawithsortlimit,postData} = require('./controller/apiController')
+
 function auth(key){
      if(key == authKey){
           return true
@@ -23,16 +25,16 @@ function auth(key){
      }
 }
 
-function getData(colName,query){
-     if(colName && query){
-          db.collection(colName).find(query).toArray((err,data)=>{
-               if(err) throw err;
-               return data
-          })
-     }else{
-        return 'Data Missing'
-     }
-}
+// function getData(colName,query){
+//      if(colName && query){
+//           db.collection(colName).find(query).toArray((err,data)=>{
+//                if(err) throw err;
+//                return data
+//           })
+//      }else{
+//         return 'Data Missing'
+//      }
+// }
 
 //get heart beat
 app.get('/',(req,res)=>{
@@ -77,13 +79,58 @@ app.get('/restaurants',(req,res)=>{
 
 // List of meals
 
-app.get('/meals',(req,res)=>{
+app.get('/meals',async (req,res)=>{
      let query = {}
      let collection = 'mealType'
-     db.collection(collection).find(query).toArray((err,data)=>{
-          res.status(200).send(data)
-     })
+     let output = await getData(db,collection,query)
+     res.send(output)
 })
+
+// Filters
+app.get('/filter/:mealID',async (req,res)=>{    //  mealId is compulsory
+      let query = {}
+      let collection = 'restaurants'
+      let sort = {cost:1}
+      let skip=0;
+      let limit=100000000;
+      let mealID=Number(req.params.mealID);
+      let cuisineId = Number(req.query.cuisineId)
+      //cost
+      let hcost=Number(req.query.hcost);
+      let lcost=Number(req.query.lcost)
+
+     if(req.query.skip && req.query.limit){
+          skip=Number(req.query.skip),
+          limit=Number(req.query.limit)
+     }
+
+      if(req.query.sort){
+          sort={cost:req.query.sort}
+      }
+
+      if(cuisineId && hcost && lcost){
+          query={
+               "mealTypes.mealtype_id":mealID,
+               "cuisines.cuisine_id":cuisineId,
+               $and:[{cost:{$gt:lcost,$lt:hcost}}]
+          }
+      } else if(cuisineId){
+          query={
+               "mealTypes.mealtype_id":mealID,
+               "cuisines.cuisine_id":cuisineId
+          }
+      }else if(hcost && lcost){
+          query={
+               "mealTypes.mealtype_id":mealID,
+               $and:[{cost:{$gt:lcost,$lt:hcost}}]
+          }
+      }
+
+      let output = await getDatawithsortlimit(db,collection,query,sort,skip,limit)    //apiController.js
+      res.send(output)
+})
+
+
 
 
 MongoClient.connect(mongoUrl,(err,client)=>{

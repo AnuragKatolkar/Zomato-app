@@ -21,9 +21,17 @@
 > http://localhost:1221/restaurants?mealId=3
 
 * Restaurants wrt mealType + CuisineType
+> http://localhost:1221/filter/1?cuisinId=2
+
 * Restaurants wrt mealType + Cost
+> http://localhost:1221/filter/1?hcost=800&lcost=300
+> http://localhost:1221/filter/1?hcost=800&lcost=300&cuisineId=1
+
 * Sort on the  basis of price
+> http://localhost:1221/filter/1?hcost=800&lcost=300&cuisineId=1
+
 * Pagination
+> http://localhost:1221/filter/1?cuisineId=2&skip=1&limit=1
 
 # Page 3
 
