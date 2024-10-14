@@ -130,6 +130,17 @@ app.get('/filter/:mealID',async (req,res)=>{    //  mealId is compulsory
       res.send(output)
 })
 
+// details
+app.get('/details/:id',async(req,res)=>{
+     let _id=mongo.ObjectId(req.params.id);
+     let query = {
+          _id:_id
+     }
+     let collection = 'restaurants'
+     let output = await getData(db,collection,query)
+     res.send(output)
+})
+
 
 
 

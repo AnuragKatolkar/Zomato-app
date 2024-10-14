@@ -36,6 +36,8 @@
 # Page 3
 
 * Details of the page
+> http://localhost:1221/details/670bd3adc2bbe4d04d71029d
+
 * Menu wrt the restaurants
 
 # Page 4
