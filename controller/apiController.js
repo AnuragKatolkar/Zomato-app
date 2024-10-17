@@ -10,8 +10,8 @@ async function getDatawithsortlimit(db,colName,query,sort,skip,limit) {
      return await db.collection(colName).find(query).sort(sort).skip(skip).limit(limit).toArray()
 }
 
-async function postData(db,colName,query) {
-     return await db.collection(colName).find(query).toArray()
+async function postData(db,colName,data) {
+     return await db.collection(colName).insert(data)
 }
 
 module.exports = {

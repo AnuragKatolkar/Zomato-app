@@ -141,7 +141,51 @@ app.get('/details/:id',async(req,res)=>{
      res.send(output)
 })
 
+//menu wrt to restaurants
+app.get('/menu/:id',async (req,res)=>{
+     let id =Number(req.params.id)
+     let query = {restaurant_id:id}
+     let collection = 'menu'
+     let output = await getData(db,collection,query)
+     res.send(output)
+})
 
+
+
+//order
+app.get('/orders',async (req,res)=>{
+     let query ={}
+     if(req.query.email){
+          query={email:req.query.email}
+     }
+     let collection='orders'
+     let output = await getData(db,collection,query)
+     res.send(output)
+
+
+})
+
+//placeOrders
+
+app.post('/placeOrder',async (req,res)=>{
+     let data = req.body;
+     let collection='orders'
+     let response = await postData(db,collection,data)
+     res.send(response)
+
+})
+
+//menu detalis {"id":[1,5,6]}
+app.post('/menuDetails',async(req,res)=>{
+     if(Array.isArray(req.body.id)){
+          let query ={menu_id:{$in:req.body.id}}
+          let collection='menu'
+          let output = await getData(db,collection,query)
+          res.send(output)
+     }else{
+          res.send('Plese pass data as array like {"id":[1,5,6]}')
+     }
+})
 
 
 MongoClient.connect(mongoUrl,(err,client)=>{

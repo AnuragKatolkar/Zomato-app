@@ -39,18 +39,32 @@
 > http://localhost:1221/details/670bd3adc2bbe4d04d71029d
 
 * Menu wrt the restaurants
+> http://localhost:1221/menu/9
 
 # Page 4
 
 * Details of the selected Menu.
-* Place Order
 
+
+* Place Order
+> http://localhost:1221/placeOrder
+# this will add in postman (body=>raw)
+{
+    "orderId":4,
+    "name":"Anurag",
+    "address":"home 55",
+    "phone":9874563210,
+    "cost":774,
+    "menuItem": [
+        12.10
+    ]
+}
 # Page 5
 
 * View All order / with or without email
+> http://localhost:1221/orders?email=aakash@gmail.com
+> http://localhost:1221/orders
+
 * Update order details
-* Delete Order   "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongodb": "^4.13.0"
+* Delete Order  
+   
