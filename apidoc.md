@@ -44,10 +44,11 @@
 # Page 4
 
 * Details of the selected Menu.
-
+> (POST) http://localhost:1221/menuDetails
+{"id":[1,2,3]}
 
 * Place Order
-> http://localhost:1221/placeOrder
+> (POST) http://localhost:1221/placeOrder
 # this will add in postman (body=>raw)
 {
     "orderId":4,
@@ -66,5 +67,15 @@
 > http://localhost:1221/orders
 
 * Update order details
+> (PUT) http://localhost:1221/updateOrder
+{
+    "_id":"670bd38cc2bbe4d04d71024c",
+    "status":"Deliver"
+}
 * Delete Order  
+(DELETE) loccalhost:1221/deleteOrder
+
+{
+    "_id":"62514d69f5aec503b2e0f2aa"
+}
    
